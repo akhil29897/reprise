@@ -1,0 +1,44 @@
+[
+  {
+    "name": "apple_cv.mov",
+    "url": "https://samples.ffmpeg.org/mov/broken-movs/apple_cv.mov",
+    "size": 461301,
+    "sha256": "3b255b89ee4d8be499b4214477726786bb3be1eda5e11c53b18accbb9fd35817",
+    "downloadedAt": "2026-09-12"
+  },
+  {
+    "name": "ctk_cpro.mov",
+    "url": "https://samples.ffmpeg.org/mov/broken-movs/ctk_cpro.mov",
+    "size": 680605,
+    "sha256": "2612256361516db4a5ae77e3b48b2dfeb06aaebc0bdd8d3bc7fe06726d7d93ce",
+    "downloadedAt": "2026-09-12"
+  },
+  {
+    "name": "Mansha.avi",
+    "url": "https://samples.ffmpeg.org/avi/bad-index/Mansha.avi",
+    "size": 539136,
+    "sha256": "659d85c3c7d245f8b4cb8b145c0152608904bab125c2b8d1f46fee0ac00510b1",
+    "downloadedAt": "2026-09-12"
+  },
+  {
+    "name": "broken_index1.avi",
+    "url": "https://samples.ffmpeg.org/avi/bad-index/broken_index1.avi",
+    "size": 10913332,
+    "sha256": "0facc19202108425d5bc25783ff5883cd511eb00ce1a2f96512e3a5b4623550b",
+    "downloadedAt": "2026-09-12"
+  },
+  {
+    "name": "eof_garbage.wav",
+    "url": "https://samples.ffmpeg.org/A-codecs/wavpcm/eof_garbage.wav",
+    "size": 22048,
+    "sha256": "64e2769d1416004859a5fe9346fcb213a677016aa25212784250a268969e3d54",
+    "downloadedAt": "2026-09-12"
+  },
+  {
+    "name": "broken-first-frame.mp3",
+    "url": "https://samples.ffmpeg.org/A-codecs/MP3/broken-first-frame.mp3",
+    "size": 102400,
+    "sha256": "79414a5a59b36373f01dfc02878af66730982e0221713399f0e5c5e837c261b6",
+    "downloadedAt": "2026-09-12"
+  }
+]

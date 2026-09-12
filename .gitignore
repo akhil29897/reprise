@@ -1,0 +1,11 @@
+node_modules/
+.DS_Store
+.openai/
+.sites-runtime/
+companion/target/
+companion/runtime/
+companion/vendor/
+companion/.cargo/
+__pycache__/
+tools/corpus/
+tools/corpus-results/

@@ -1,0 +1,341 @@
+[
+  {
+    "name": "apple_cv.mov",
+    "url": "https://samples.ffmpeg.org/mov/broken-movs/apple_cv.mov",
+    "size": 461301,
+    "sha256": "3b255b89ee4d8be499b4214477726786bb3be1eda5e11c53b18accbb9fd35817",
+    "downloadedAt": "2026-09-12",
+    "before": {
+      "exitCode": 0,
+      "errorLines": 1,
+      "errors": [
+        "[in#0 @ 0x13c704ce0] stream 0, missing mandatory atoms, broken header"
+      ],
+      "seconds": 0.075,
+      "lastProgress": {
+        "frame": "0",
+        "fps": "0.00",
+        "stream_0_0_q": "0.0",
+        "bitrate": "N/A",
+        "total_size": "N/A",
+        "out_time_us": "N/A",
+        "out_time_ms": "N/A",
+        "out_time": "N/A",
+        "dup_frames": "0",
+        "drop_frames": "0",
+        "speed": "N/A",
+        "progress": "end"
+      }
+    },
+    "afterStatus": "failed",
+    "afterValidation": {
+      "errorCount": 0,
+      "fullDecode": false,
+      "notes": [
+        "No readable audio/video packets were found"
+      ]
+    },
+    "duration": null,
+    "summary": "No readable audio/video packets were found",
+    "warnings": [
+      "Successful decoding does not establish recovery of the original recording or its completeness. Metadata, timecode, and HDR fidelity are not fully verified."
+    ],
+    "outputSize": null,
+    "repairSeconds": 0.234,
+    "inputUnchanged": true
+  },
+  {
+    "name": "ctk_cpro.mov",
+    "url": "https://samples.ffmpeg.org/mov/broken-movs/ctk_cpro.mov",
+    "size": 680605,
+    "sha256": "2612256361516db4a5ae77e3b48b2dfeb06aaebc0bdd8d3bc7fe06726d7d93ce",
+    "downloadedAt": "2026-09-12",
+    "before": {
+      "exitCode": 0,
+      "errorLines": 1,
+      "errors": [
+        "[in#0 @ 0x134e138c0] stream 0, missing mandatory atoms, broken header"
+      ],
+      "seconds": 0.021,
+      "lastProgress": {
+        "frame": "0",
+        "fps": "0.00",
+        "stream_0_0_q": "0.0",
+        "bitrate": "N/A",
+        "total_size": "N/A",
+        "out_time_us": "N/A",
+        "out_time_ms": "N/A",
+        "out_time": "N/A",
+        "dup_frames": "0",
+        "drop_frames": "0",
+        "speed": "N/A",
+        "progress": "end"
+      }
+    },
+    "afterStatus": "failed",
+    "afterValidation": {
+      "errorCount": 0,
+      "fullDecode": false,
+      "notes": [
+        "No readable audio/video packets were found"
+      ]
+    },
+    "duration": null,
+    "summary": "No readable audio/video packets were found",
+    "warnings": [
+      "Successful decoding does not establish recovery of the original recording or its completeness. Metadata, timecode, and HDR fidelity are not fully verified."
+    ],
+    "outputSize": null,
+    "repairSeconds": 0.222,
+    "inputUnchanged": true
+  },
+  {
+    "name": "Mansha.avi",
+    "url": "https://samples.ffmpeg.org/avi/bad-index/Mansha.avi",
+    "size": 539136,
+    "sha256": "659d85c3c7d245f8b4cb8b145c0152608904bab125c2b8d1f46fee0ac00510b1",
+    "downloadedAt": "2026-09-12",
+    "before": {
+      "exitCode": 0,
+      "errorLines": 0,
+      "errors": [],
+      "seconds": 0.04,
+      "lastProgress": {
+        "frame": "54",
+        "fps": "0.00",
+        "stream_0_0_q": "-0.0",
+        "bitrate": "N/A",
+        "total_size": "N/A",
+        "out_time_us": "1522336",
+        "out_time_ms": "1522336",
+        "out_time": "00:00:01.522336",
+        "dup_frames": "0",
+        "drop_frames": "0",
+        "speed": " 307x",
+        "progress": "end"
+      }
+    },
+    "afterStatus": "completed",
+    "afterValidation": {
+      "decodedMediaObserved": true,
+      "errorCount": 0,
+      "fullDecode": true,
+      "notes": [
+        "Stream 0: full decode succeeded",
+        "Stream 1: full decode succeeded"
+      ]
+    },
+    "duration": 1.802,
+    "summary": "Output remuxed and every audio/video stream fully decoded. Completeness is unknown.",
+    "warnings": [
+      "Successful decoding does not establish recovery of the original recording or its completeness. Metadata, timecode, and HDR fidelity are not fully verified.",
+      "Missing AVI presentation timestamps may be generated from decode timestamps. Review timing and synchronization.",
+      "[aist#0:1/pcm_s16le @ 0x124e168b0] Guessed Channel Layout: stereo\n"
+    ],
+    "outputSize": 395265,
+    "repairSeconds": 0.318,
+    "inputUnchanged": true,
+    "independentAfterDecode": {
+      "exitCode": 0,
+      "errorLines": 0,
+      "lastProgress": {
+        "frame": "54",
+        "fps": "0.00",
+        "stream_0_0_q": "-0.0",
+        "bitrate": "N/A",
+        "total_size": "N/A",
+        "out_time_us": "1522290",
+        "out_time_ms": "1522290",
+        "out_time": "00:00:01.522290",
+        "dup_frames": "0",
+        "drop_frames": "0",
+        "speed": " 349x",
+        "progress": "end"
+      }
+    }
+  },
+  {
+    "name": "broken_index1.avi",
+    "url": "https://samples.ffmpeg.org/avi/bad-index/broken_index1.avi",
+    "size": 10913332,
+    "sha256": "0facc19202108425d5bc25783ff5883cd511eb00ce1a2f96512e3a5b4623550b",
+    "downloadedAt": "2026-09-12",
+    "before": {
+      "exitCode": 0,
+      "errorLines": 1,
+      "errors": [
+        "[mpeg4 @ 0x12ae165c0] Error at MB: 1428"
+      ],
+      "seconds": 0.401,
+      "lastProgress": {
+        "frame": "747",
+        "fps": "0.00",
+        "stream_0_0_q": "-0.0",
+        "bitrate": "N/A",
+        "total_size": "N/A",
+        "out_time_us": "30000000",
+        "out_time_ms": "30000000",
+        "out_time": "00:00:30.000000",
+        "dup_frames": "0",
+        "drop_frames": "0",
+        "speed": "85.5x",
+        "progress": "end"
+      }
+    },
+    "afterStatus": "partial",
+    "afterValidation": {
+      "decodedMediaObserved": true,
+      "errorCount": 3,
+      "fullDecode": false,
+      "notes": [
+        "Stream 0: decode errors recorded",
+        "[null @ 0x11f6152b0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 4 >= 4\n[mpeg4 @ 0x11f61cbb0] Error at MB: 1428\n[null @ 0x11f6152b0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 749 >= 749\n",
+        "Stream 1: full decode succeeded"
+      ]
+    },
+    "duration": 30.04,
+    "summary": "A candidate contains some decoded media but has validation or remux errors. Review it carefully; playback and completeness are not established.",
+    "warnings": [
+      "Successful decoding does not establish recovery of the original recording or its completeness. Metadata, timecode, and HDR fidelity are not fully verified.",
+      "Missing AVI presentation timestamps may be generated from decode timestamps. Review timing and synchronization."
+    ],
+    "outputSize": 10793235,
+    "repairSeconds": 0.788,
+    "inputUnchanged": true,
+    "independentAfterDecode": {
+      "exitCode": 0,
+      "errorLines": 3,
+      "lastProgress": {
+        "frame": "747",
+        "fps": "0.00",
+        "stream_0_0_q": "-0.0",
+        "bitrate": "N/A",
+        "total_size": "N/A",
+        "out_time_us": "30000000",
+        "out_time_ms": "30000000",
+        "out_time": "00:00:30.000000",
+        "dup_frames": "0",
+        "drop_frames": "0",
+        "speed": "94.8x",
+        "progress": "end"
+      }
+    }
+  },
+  {
+    "name": "eof_garbage.wav",
+    "url": "https://samples.ffmpeg.org/A-codecs/wavpcm/eof_garbage.wav",
+    "size": 22048,
+    "sha256": "64e2769d1416004859a5fe9346fcb213a677016aa25212784250a268969e3d54",
+    "downloadedAt": "2026-09-12",
+    "before": {
+      "exitCode": 0,
+      "errorLines": 0,
+      "errors": [],
+      "seconds": 0.022,
+      "lastProgress": {
+        "bitrate": "N/A",
+        "total_size": "N/A",
+        "out_time_us": "124535",
+        "out_time_ms": "124535",
+        "out_time": "00:00:00.124535",
+        "dup_frames": "0",
+        "drop_frames": "0",
+        "speed": " 245x",
+        "progress": "end"
+      }
+    },
+    "afterStatus": "completed",
+    "afterValidation": {
+      "decodedMediaObserved": true,
+      "errorCount": 0,
+      "fullDecode": true,
+      "notes": [
+        "Stream 0: full decode succeeded"
+      ]
+    },
+    "duration": 0.125,
+    "summary": "Output remuxed and every audio/video stream fully decoded. Completeness is unknown.",
+    "warnings": [
+      "Successful decoding does not establish recovery of the original recording or its completeness. Metadata, timecode, and HDR fidelity are not fully verified.",
+      "[aist#0:0/pcm_s16le @ 0x14d6144f0] Guessed Channel Layout: stereo\n"
+    ],
+    "outputSize": 22507,
+    "repairSeconds": 0.324,
+    "inputUnchanged": true,
+    "independentAfterDecode": {
+      "exitCode": 0,
+      "errorLines": 0,
+      "lastProgress": {
+        "bitrate": "N/A",
+        "total_size": "N/A",
+        "out_time_us": "124535",
+        "out_time_ms": "124535",
+        "out_time": "00:00:00.124535",
+        "dup_frames": "0",
+        "drop_frames": "0",
+        "speed": " 276x",
+        "progress": "end"
+      }
+    }
+  },
+  {
+    "name": "broken-first-frame.mp3",
+    "url": "https://samples.ffmpeg.org/A-codecs/MP3/broken-first-frame.mp3",
+    "size": 102400,
+    "sha256": "79414a5a59b36373f01dfc02878af66730982e0221713399f0e5c5e837c261b6",
+    "downloadedAt": "2026-09-12",
+    "before": {
+      "exitCode": 0,
+      "errorLines": 1,
+      "errors": [
+        "[mp3float @ 0x128f129a0] invalid new backstep -1"
+      ],
+      "seconds": 0.038,
+      "lastProgress": {
+        "bitrate": "N/A",
+        "total_size": "N/A",
+        "out_time_us": "4257959",
+        "out_time_ms": "4257959",
+        "out_time": "00:00:04.257959",
+        "dup_frames": "0",
+        "drop_frames": "0",
+        "speed": "1.16e+03x",
+        "progress": "end"
+      }
+    },
+    "afterStatus": "partial",
+    "afterValidation": {
+      "decodedMediaObserved": true,
+      "errorCount": 1,
+      "fullDecode": false,
+      "notes": [
+        "Stream 0: decode errors recorded",
+        "[mp3float @ 0x140e182d0] invalid new backstep -1\n"
+      ]
+    },
+    "duration": 4.258,
+    "summary": "A candidate contains some decoded media but has validation or remux errors. Review it carefully; playback and completeness are not established.",
+    "warnings": [
+      "Successful decoding does not establish recovery of the original recording or its completeness. Metadata, timecode, and HDR fidelity are not fully verified.",
+      "[in#0/mp3 @ 0x122e13950] Estimating duration from bitrate, this may be inaccurate\n"
+    ],
+    "outputSize": 103447,
+    "repairSeconds": 0.327,
+    "inputUnchanged": true,
+    "independentAfterDecode": {
+      "exitCode": 0,
+      "errorLines": 1,
+      "lastProgress": {
+        "bitrate": "N/A",
+        "total_size": "N/A",
+        "out_time_us": "4257959",
+        "out_time_ms": "4257959",
+        "out_time": "00:00:04.257959",
+        "dup_frames": "0",
+        "drop_frames": "0",
+        "speed": "1.13e+03x",
+        "progress": "end"
+      }
+    }
+  }
+]
