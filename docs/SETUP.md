@@ -65,7 +65,7 @@ Before charging, validate demand with creator/studio interviews and small paid p
 
 ## Validation and roadmap
 
-Run `npm test` for browser engines and API client tests. Run `cargo test --locked` from `companion`. Build the debug binary and optional untrunc, then run `python3 tests/acceptance.py` from that directory for generated FFmpeg integration tests. The included GitHub Actions workflow defines macOS, Windows, and Linux build jobs; it has not been run on a remote repository here.
+Run `npm test` for browser engines and API client tests. Run `cargo test --locked` from `companion`. Build the debug binary and optional untrunc, then run `python3 tests/acceptance.py` from that directory for generated FFmpeg integration tests. GitHub Actions passed the browser suite and companion unit tests/release builds on macOS, Windows, and Linux on 13 September 2026 (India time). See https://github.com/akhil29897/reprise/actions/runs/34711592195. Full Windows media-repair runtime tests remain outstanding.
 
 See `docs/verification.md` and `docs/media-repair-benchmark.md` for exact evidence. Internet samples are linked and hashed; third-party media are not redistributed in source or web downloads.
 
