@@ -1,0 +1,314 @@
+{
+  "recordedAt": "2026-09-12T19:02:35.588Z",
+  "runtime": "v25.5.0",
+  "method": "contiguous-signature-carving",
+  "results": [
+    {
+      "image": "L0_Graphic.dd",
+      "imageSha256": "4d63d314f34a7349732bb0d36a434534dab551c0aebb2285cbe0216e0640a5f5",
+      "elapsedMs": 480,
+      "sourceUnchanged": true,
+      "status": "completed",
+      "scannedBytes": 64769536,
+      "totalBytes": 64769536,
+      "candidates": [
+        {
+          "id": 1,
+          "offset": 5120000,
+          "size": 12966639,
+          "extension": "png",
+          "category": "image",
+          "mime": "image/png",
+          "evidence": [
+            "PNG signature, chunk boundaries and all chunk CRCs verified.",
+            "IHDR, image data and IEND found; pixels have not been decoded."
+          ],
+          "name": "recovered_00001.png",
+          "sha256": "9779c1ee5174f00f7d4130204c506a0e65d0be02d12d54ba2800f632ff95ca5b",
+          "exactOriginalMatch": "000_0021.png"
+        },
+        {
+          "id": 2,
+          "offset": 29133824,
+          "size": 60716,
+          "extension": "jpg",
+          "category": "image",
+          "mime": "image/jpeg",
+          "evidence": [
+            "JPEG marker and segment boundaries, frame, scan and end marker found.",
+            "Entropy is not decoded; damaged or fragmented pixels can still be present."
+          ],
+          "name": "recovered_00002.jpg",
+          "sha256": "4f99dcc33967f1739a4448e9ec61ad85e3b20b4a1e70a63a62ae69d66b42ed5a",
+          "exactOriginalMatch": "09260002.jpg"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "image": "L0_Audio.dd",
+      "imageSha256": "47bd1da3f7a2419194bc759a132becfe1e02e6e58a0ba958e60609cbbf421d5e",
+      "elapsedMs": 234,
+      "sourceUnchanged": true,
+      "status": "completed",
+      "scannedBytes": 36465664,
+      "totalBytes": 36465664,
+      "candidates": [
+        {
+          "id": 1,
+          "offset": 11293184,
+          "size": 4612660,
+          "extension": "wav",
+          "category": "audio",
+          "mime": "audio/wav",
+          "evidence": [
+            "RIFF length and top-level chunks fit the image.",
+            "Required format and nonempty media chunks found.",
+            "Codec decoding and fragmented-file reconstruction were not performed."
+          ],
+          "name": "recovered_00001.wav",
+          "sha256": "76496bdab2a315ac23b22190d0f2a61ebc31e39f1047207cd1a072bf8fe96552",
+          "exactOriginalMatch": null
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "image": "L0_Video.dd",
+      "imageSha256": "20d8a231ded5223bbecab97d4155d028ef9cd0760a5dd3ecef22123c46b48870",
+      "elapsedMs": 426,
+      "sourceUnchanged": true,
+      "status": "completed",
+      "scannedBytes": 62578688,
+      "totalBytes": 62578688,
+      "candidates": [
+        {
+          "id": 1,
+          "offset": 5120000,
+          "size": 1136007,
+          "extension": "mp4",
+          "category": "video",
+          "mime": "video/mp4",
+          "evidence": [
+            "Explicit top-level box boundaries, moov and nonempty mdat found.",
+            "Contiguous candidate only; sample offsets, tracks and frames are not validated.",
+            "Trailing unrelated boxes may be included; original completeness is unknown."
+          ],
+          "name": "recovered_00001.mp4",
+          "sha256": "0ee69d3b50e9e0fa83d4d1f022510f99d4d013fd42fa4da5804d5fe0c66ffda4",
+          "exactOriginalMatch": "vid1.mp4"
+        },
+        {
+          "id": 2,
+          "offset": 11376128,
+          "size": 1470360,
+          "extension": "avi",
+          "category": "video",
+          "mime": "video/x-msvideo",
+          "evidence": [
+            "RIFF length and top-level chunks fit the image.",
+            "Required format and nonempty media chunks found.",
+            "Codec decoding and fragmented-file reconstruction were not performed."
+          ],
+          "name": "recovered_00002.avi",
+          "sha256": "e0063e655acae16079cc8bae5ad1862d52b449f5aad919d311c9222f63f38693",
+          "exactOriginalMatch": "vid2.avi"
+        },
+        {
+          "id": 3,
+          "offset": 17966592,
+          "size": 497414,
+          "extension": "mov",
+          "category": "video",
+          "mime": "video/quicktime",
+          "evidence": [
+            "Explicit top-level box boundaries, moov and nonempty mdat found.",
+            "Contiguous candidate only; sample offsets, tracks and frames are not validated.",
+            "Trailing unrelated boxes may be included; original completeness is unknown."
+          ],
+          "name": "recovered_00003.mov",
+          "sha256": "a080ef2d7afce448e981e9eceaed709beffc073dccdea12f7b6fe08c3c891323",
+          "exactOriginalMatch": "vid3.mov"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "image": "L0_Archive.dd",
+      "imageSha256": "8ff3ff27a61d497d64932b6122affa5d5559785329de31b220c7e1e41de04319",
+      "elapsedMs": 424,
+      "sourceUnchanged": true,
+      "status": "completed",
+      "scannedBytes": 41253888,
+      "totalBytes": 41253888,
+      "candidates": [
+        {
+          "id": 1,
+          "offset": 22226944,
+          "size": 1210966,
+          "extension": "jpg",
+          "category": "image",
+          "mime": "image/jpeg",
+          "evidence": [
+            "JPEG marker and segment boundaries, frame, scan and end marker found.",
+            "Entropy is not decoded; damaged or fragmented pixels can still be present."
+          ],
+          "name": "recovered_00001.jpg",
+          "sha256": "8ac7d72ec63195450dac9b753f97df3c3a95515a570a1ec86790f4d2af1f9515",
+          "exactOriginalMatch": null
+        },
+        {
+          "id": 2,
+          "offset": 28559568,
+          "size": 939789,
+          "extension": "jpg",
+          "category": "image",
+          "mime": "image/jpeg",
+          "evidence": [
+            "JPEG marker and segment boundaries, frame, scan and end marker found.",
+            "Entropy is not decoded; damaged or fragmented pixels can still be present."
+          ],
+          "name": "recovered_00002.jpg",
+          "sha256": "17c68ac0a3bd4edf1877cd9d57bf247e25a06b0f8118fd9eb55955cadfd22020",
+          "exactOriginalMatch": null
+        },
+        {
+          "id": 3,
+          "offset": 40609792,
+          "size": 643764,
+          "extension": "zip",
+          "category": "archive",
+          "mime": "application/zip",
+          "evidence": [
+            "Local file headers, central directory, relative offsets and end record agree.",
+            "1 entries; file contents were not decompressed or CRC-checked.",
+            "ZIP64, data descriptors and encrypted/split archives are unsupported."
+          ],
+          "name": "recovered_00003.zip",
+          "sha256": "1b61339346e0d7de4426aadbd92331fe98f9ff5a22c9e1e165aa2fc964339c7a",
+          "exactOriginalMatch": "arc7.zip"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "image": "L0_Documents.dd",
+      "imageSha256": "769e7664cf471e73666144ff90e6419ac7123089089d4f3b07a1c7f21698fafe",
+      "elapsedMs": 316,
+      "sourceUnchanged": true,
+      "status": "completed",
+      "scannedBytes": 42490880,
+      "totalBytes": 42490880,
+      "candidates": [
+        {
+          "id": 1,
+          "offset": 21062144,
+          "size": 23513,
+          "extension": "xlsx",
+          "category": "document",
+          "mime": "application/zip",
+          "evidence": [
+            "Local file headers, central directory, relative offsets and end record agree.",
+            "14 entries; file contents were not decompressed or CRC-checked.",
+            "ZIP64, data descriptors and encrypted/split archives are unsupported."
+          ],
+          "name": "recovered_00001.xlsx",
+          "sha256": "1431787c5cc274b75ddf527c8c4db911fca7e9c6a7b926313d5898f71b8fd0b7",
+          "exactOriginalMatch": "D3.xlsx"
+        },
+        {
+          "id": 2,
+          "offset": 26205696,
+          "size": 13824,
+          "extension": "xlsx",
+          "category": "document",
+          "mime": "application/zip",
+          "evidence": [
+            "Local file headers, central directory, relative offsets and end record agree.",
+            "14 entries; file contents were not decompressed or CRC-checked.",
+            "ZIP64, data descriptors and encrypted/split archives are unsupported."
+          ],
+          "name": "recovered_00002.xlsx",
+          "sha256": "aab0881727cb2c822e02affd9c6d44f0c2ab7a8354fecc70b193803644abd98a",
+          "exactOriginalMatch": "D4.xlsx"
+        },
+        {
+          "id": 3,
+          "offset": 31339520,
+          "size": 4424,
+          "extension": "docx",
+          "category": "document",
+          "mime": "application/zip",
+          "evidence": [
+            "Local file headers, central directory, relative offsets and end record agree.",
+            "8 entries; file contents were not decompressed or CRC-checked.",
+            "ZIP64, data descriptors and encrypted/split archives are unsupported."
+          ],
+          "name": "recovered_00003.docx",
+          "sha256": "9176243505743457d9ebcd9e1519582fb97dedc8be6626aaf5354be49db3ec6d",
+          "exactOriginalMatch": "D5.docx"
+        },
+        {
+          "id": 4,
+          "offset": 36464128,
+          "size": 4004,
+          "extension": "docx",
+          "category": "document",
+          "mime": "application/zip",
+          "evidence": [
+            "Local file headers, central directory, relative offsets and end record agree.",
+            "8 entries; file contents were not decompressed or CRC-checked.",
+            "ZIP64, data descriptors and encrypted/split archives are unsupported."
+          ],
+          "name": "recovered_00004.docx",
+          "sha256": "37228d7ad5e19850c55af5d478db2c41604530af7a7ec89f28be0b4cbf91680e",
+          "exactOriginalMatch": "D6.docx"
+        },
+        {
+          "id": 5,
+          "offset": 41588224,
+          "size": 902645,
+          "extension": "pptx",
+          "category": "document",
+          "mime": "application/zip",
+          "evidence": [
+            "Local file headers, central directory, relative offsets and end record agree.",
+            "64 entries; file contents were not decompressed or CRC-checked.",
+            "ZIP64, data descriptors and encrypted/split archives are unsupported."
+          ],
+          "name": "recovered_00005.pptx",
+          "sha256": "9cafda72f2e53ebbeb09076189e7a92224f4ca3e131ccc87ad9544a5d7957ded",
+          "exactOriginalMatch": "D7.pptx"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "image": "L2_Graphic.dd",
+      "imageSha256": "28f55a4740cba6bfd2b4a84a93f16c3970f56b8596e71f2c1a646e0e5d6b04c8",
+      "elapsedMs": 397,
+      "sourceUnchanged": true,
+      "status": "completed",
+      "scannedBytes": 64769536,
+      "totalBytes": 64769536,
+      "candidates": [
+        {
+          "id": 1,
+          "offset": 25209344,
+          "size": 40748,
+          "extension": "jpg",
+          "category": "image",
+          "mime": "image/jpeg",
+          "evidence": [
+            "JPEG marker and segment boundaries, frame, scan and end marker found.",
+            "Entropy is not decoded; damaged or fragmented pixels can still be present."
+          ],
+          "name": "recovered_00001.jpg",
+          "sha256": "366c5ea8cba79232c916840aa4cefe2d5db530a45999069a2c2beae24d2d40d4",
+          "exactOriginalMatch": null
+        }
+      ],
+      "warnings": []
+    }
+  ]
+}

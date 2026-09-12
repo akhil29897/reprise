@@ -9,3 +9,6 @@ companion/.cargo/
 __pycache__/
 tools/corpus/
 tools/corpus-results/
+
+work/
+tools/recovery-corpus/

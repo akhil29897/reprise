@@ -1,6 +1,6 @@
-# Reprise — free, local media repair
+# Reprise — local repair and recovery
 
-Reprise 0.1 is an early, working media-repair release. All repair and export features are free. New code is GPL-3.0-or-later. No media is sent to a cloud service. The website and companion are separate so that the media engines run on your own computer.
+Reprise web 0.2 adds raw disk-image carving to the early media-repair release. Companion 0.1 is unchanged. All repair and export features are free. New code is GPL-3.0-or-later. No media is sent to a cloud service. The website and companion are separate so that the media engines run on your own computer.
 
 ## Try it
 
@@ -16,6 +16,10 @@ python3 -m http.server 4173 --bind 127.0.0.1 --directory dist
 
 Then open http://127.0.0.1:4173. There is no npm installation or web build step. Node 22 or newer is used for `npm test`.
 
+## Recover from an image
+
+Open **Recover files**, select a raw image or the built-in demo, then scan and save candidates. This workflow needs no companion. See [methods, limitations and public benchmark](https://github.com/akhil29897/reprise/blob/main/docs/image-recovery.md). Physical-drive scanning and filesystem reconstruction remain planned.
+
 ## Build the companion
 
 Install Rust from https://rustup.rs and FFmpeg/ffprobe from a trusted distribution. From this source package:
@@ -28,7 +32,7 @@ cargo build --release --locked
 
 Windows PowerShell uses `.\target\release\reprise-companion.exe`. FFmpeg and ffprobe must be on PATH, or configured with the `REPRISE_FFMPEG` and `REPRISE_FFPROBE` environment variables containing their absolute paths. See `companion/README.md` for storage, limits, and reference-engine setup.
 
-The release source ZIP includes the Rust dependency sources used by the Mac build, their upstream licenses, and pinned untrunc source under `third_party/`. Cargo resolves build dependencies using Cargo.lock; the first build requires internet access and an installed Rust toolchain. Dependency sources are supplied for transparency and redistribution compliance, not as a complete offline toolchain.
+The original 0.1 companion release source ZIP includes the Rust dependency sources used by the Mac build, their upstream licenses, and pinned untrunc source under `third_party/`. Cargo resolves build dependencies using Cargo.lock; the first build requires internet access and an installed Rust toolchain. GitHub main/tag source archives contain project files only. The original release dependency sources are supplied for transparency and redistribution compliance, not as a complete offline toolchain.
 
 For experimental missing-index reconstruction, build the optional upstream engine using `companion/scripts/build-untrunc.sh`. It requires compiler tools and FFmpeg development headers. Set `REPRISE_UNTRUNC` to its absolute executable path before starting the companion. The optional executable and FFmpeg binaries are not included in our Mac download.
 
@@ -69,4 +73,4 @@ Run `npm test` for browser engines and API client tests. Run `cargo test --locke
 
 See `docs/verification.md` and `docs/media-repair-benchmark.md` for exact evidence. Internet samples are linked and hashed; third-party media are not redistributed in source or web downloads.
 
-Next: camera-mode fixtures and safer parser isolation; more verified audio/container repair strategies; signed installers and Windows runtime tests; then external-storage deleted-media recovery; then broader filesystem/drive recovery. SSD TRIM, encryption, fragmentation, and physically failing storage each require separate testing. Nothing in this release scans raw drives.
+Next: camera-mode fixtures and safer parser isolation; more verified audio/container repair strategies; signed installers and Windows runtime tests; then physical-drive acquisition, filesystem-aware undelete and fragmented-media reconstruction. Contiguous raw-image carving is available in web 0.2; see the recovery benchmark. SSD TRIM, encryption, fragmentation, and physically failing storage each require separate testing. Nothing in this release scans raw drives.

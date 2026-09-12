@@ -1,3 +1,15 @@
+# Reprise 0.2 recovery verification
+
+13 September 2026, macOS Apple Silicon, Node 25.5.0. The browser/client suite now passes **35 tests** (19 new recovery cases plus the existing 16). No companion implementation changed.
+
+Six public NIST images passed unchanged-source SHA checks. Eleven candidates match separately downloaded originals byte-for-byte; four do not. See [full recovery evidence](image-recovery.md), [machine-readable results](image-recovery-results.json), and [pinned fixtures](recovery-corpus.json).
+
+Independent review reproduced and verified fixes for malformed EOF signatures incorrectly stopping scans, silent candidate-size limits, ZIP cache retention (69.7 MB → 4.22 MB in a sparse 1,000-entry probe), aggregate ZIP metadata budgets, and a JPEG cap-window regression. Dense false headers now reuse scan bytes instead of wasting parser I/O. This is not a formal security audit.
+
+The in-app browser completed demo and real NIST graphics scans; save/report actions were exercised, and a recovered WAV reached the repair diagnostic workspace unchanged. A 390px-wide result screen had document width 390px. A 1 GiB sparse-image scan stopped after 24 MiB with explicit stopped status. A gzip input was refused with raw-image conversion guidance. Separate Safari/Firefox and Windows UI runtime tests remain outstanding.
+
+---
+
 # Reprise 0.1 verification
 
 Run locally on 12 September 2026 on macOS Apple Silicon, FFmpeg/ffprobe 8.1. This is an engineering release with a bounded verified scope.
