@@ -1,6 +1,6 @@
 # Reprise 0.2 recovery verification
 
-13 September 2026, macOS Apple Silicon, Node 25.5.0. The browser/client suite now passes **35 tests** (19 new recovery cases plus the existing 16). No companion implementation changed.
+13 September 2026, macOS Apple Silicon, Node 25.5.0. The browser/client suite now passes **35 tests** (19 new recovery cases plus the existing 16). No companion implementation changed. The [0.2 GitHub CI run](https://github.com/akhil29897/reprise/actions/runs/34713300457) passed Node 22 web tests and native unit tests/release builds on Windows, macOS and Linux. [Pages deployment](https://github.com/akhil29897/reprise/actions/runs/34713300458) succeeded. The public recovery demo was exercised, and the served HTML, CSS, JavaScript modules and recovery guide matched the reviewed files by SHA-256.
 
 Six public NIST images passed unchanged-source SHA checks. Eleven candidates match separately downloaded originals byte-for-byte; four do not. See [full recovery evidence](image-recovery.md), [machine-readable results](image-recovery-results.json), and [pinned fixtures](recovery-corpus.json).
 

@@ -37,4 +37,4 @@ Worker receives `{type:'start', file, scope}` or `{type:'cancel'}` and posts pro
 Files: `docs/image-recovery.md`, benchmark tooling/report, README and deployed guide.
 - [x] Run supported formats against public NIST contiguous-file disk images, compare candidate hashes with originals where available, record unsupported and fragmented limitations. Do not redistribute public fixtures.
 - [x] Review all changes, run the entire browser suite, verify asset syntax and changed UI. Existing native binary is unchanged.
-- [ ] Commit and integrate to main, push the authorized public repository, wait for CI/Pages, verify deployed recovery assets and demo. Publish current source via the repository link; retain the clearly versioned existing companion download.
+- [x] Commit and integrate to main, push the authorized public repository, wait for CI/Pages, verify deployed recovery assets and demo. Publish current source via the repository link; retain the clearly versioned existing companion download.
