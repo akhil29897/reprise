@@ -1,5 +1,6 @@
 import { inspectFile, repairWav, createDemoFile } from "./engine.js";
 import { catalog, searchCatalog } from "./catalog.js";
+import { initRecovery } from "./recovery.js";
 import * as companion from "./companion.js";
 const $ = (s) => document.querySelector(s);
 const files = [];
@@ -37,7 +38,7 @@ function download(blob, name) {
   setTimeout(() => URL.revokeObjectURL(url), 60000);
 }
 function navigate() {
-  const route = ["workspace", "coverage", "guide"].includes(
+  const route = ["workspace", "recovery", "coverage", "guide"].includes(
     location.hash.slice(1),
   )
     ? location.hash.slice(1)
@@ -50,12 +51,15 @@ function navigate() {
     if (x.dataset.nav === route) x.setAttribute("aria-current", "page");
     else x.removeAttribute("aria-current");
   });
+  $("#connect-btn").hidden = route === "recovery";
   $("#breadcrumb").textContent =
     route === "workspace"
       ? "Workspace / Media repair"
-      : route === "coverage"
-        ? "Library / Camera & format coverage"
-        : "Guide / How repair works";
+      : route === "recovery"
+        ? "Workspace / File recovery"
+        : route === "coverage"
+          ? "Library / Camera & format coverage"
+          : "Guide / How repair works";
 }
 window.addEventListener("hashchange", navigate);
 navigate();
@@ -534,3 +538,5 @@ if (context?.registerTool) {
     } catch {}
   }
 }
+
+initRecovery({ addFiles, download, bytes, toast });

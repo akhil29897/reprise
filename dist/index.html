@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Reprise — Private media repair</title>
+    <title>Reprise — Local repair & recovery</title>
     <meta
       name="description"
-      content="Repair damaged audio and video locally. Free, open-source tools with transparent results and no cloud media uploads."
+      content="Repair damaged recordings and recover supported files from raw disk images locally. Free, open-source tools with transparent results and no cloud media uploads."
     />
     <link
       rel="icon"
@@ -28,18 +28,15 @@
       <div class="sidebar-label">THE WORKBENCH</div>
       <nav aria-label="Main navigation">
         <a href="#workspace" data-nav="workspace" class="nav-item active"
-          ><span aria-hidden="true">▧</span> Repair workspace</a
+          ><span aria-hidden="true">▧</span> Repair recordings</a
+        ><a href="#recovery" data-nav="recovery" class="nav-item"
+          ><span aria-hidden="true">↺</span> Recover files</a
         ><a href="#coverage" data-nav="coverage" class="nav-item"
-          ><span aria-hidden="true">▦</span> Camera & format coverage</a
+          ><span aria-hidden="true">▦</span> Coverage</a
         ><a href="#guide" data-nav="guide" class="nav-item"
-          ><span aria-hidden="true">ⓘ</span> How repair works</a
+          ><span aria-hidden="true">ⓘ</span> How it works</a
         >
       </nav>
-      <div class="roadmap">
-        <div class="sidebar-label">COMING AFTER REPAIR</div>
-        <span>Deleted media recovery <small>Planned</small></span
-        ><span>Drive recovery <small>Planned</small></span>
-      </div>
       <div class="sidebar-bottom">
         <div class="local-note">
           <svg
@@ -62,10 +59,13 @@
           ><strong>Your files stay yours.</strong>
           <p>Processed on your computer.<br />No cloud media uploads.</p>
         </div>
-        <a href="https://github.com/akhil29897/reprise/releases/download/v0.1.0-alpha.1/reprise-source.zip" class="source-link" download
+        <a
+          href="https://github.com/akhil29897/reprise/archive/refs/heads/main.zip"
+          class="source-link"
+          download
           >↗ Download source <span>GPL v3+</span></a
         >
-        <div class="version">REPRISE <span>0.1 · EARLY ACCESS</span></div>
+        <div class="version">REPRISE <span>0.2 · EARLY ACCESS</span></div>
       </div>
     </aside>
     <div class="shell">
@@ -195,6 +195,164 @@
             ><a href="#coverage">Explore coverage →</a>
           </div>
         </section>
+        <section id="recovery-view" class="view" hidden>
+          <div class="page-heading">
+            <div>
+              <div class="eyebrow">FROM A DISK IMAGE</div>
+              <h1>Find files that remain.</h1>
+              <p>
+                Recover supported files from a raw image of a card, drive, or
+                volume.
+              </p>
+            </div>
+          </div>
+          <div class="workflow" aria-label="Recovery process">
+            <span class="current"><b>1</b> Choose image</span><i></i
+            ><span><b>2</b> Scan locally</span><i></i
+            ><span><b>3</b> Review & save</span>
+            <div class="workflow-note">No companion needed</div>
+          </div>
+          <div class="recovery-source-card">
+            <div class="eyebrow">START WITH A COPY</div>
+            <h2>Choose your disk image.</h2>
+            <p>
+              An uncompressed .dd, .img, or .raw file. The scan runs on your
+              computer and leaves the image unchanged.
+            </p>
+            <input
+              type="file"
+              id="image-input"
+              hidden
+              aria-label="Choose raw disk image"
+            />
+            <div class="inline-actions">
+              <button class="button primary" id="image-choose">
+                Choose disk image ↗</button
+              ><button class="text-button" id="image-demo">
+                Try a demo image
+              </button>
+            </div>
+            <div id="recovery-setup" hidden>
+              <div id="image-source" class="image-source"></div>
+              <div class="recovery-scan-controls">
+                <label for="recovery-scope"
+                  >Look for
+                  <select id="recovery-scope">
+                    <option value="media">Photos, video & audio</option>
+                    <option value="all">All supported files</option>
+                  </select></label
+                ><button class="button primary" id="scan-start" disabled>
+                  Start scan
+                </button>
+              </div>
+            </div>
+          </div>
+          <details class="recovery-help">
+            <summary>
+              What can I recover? What if I only have the drive?
+            </summary>
+            <p>
+              This release scans
+              <strong>raw, uncompressed disk-image files</strong>. It looks for
+              contiguous WAV, AVI, MP4/MOV, JPEG, PNG and ordinary ZIP files,
+              including recognizable DOCX, XLSX and PPTX containers. “All
+              supported files” adds archives and documents. It does not support
+              every variant of these formats.
+            </p>
+            <p>
+              Make a read-only raw image with an imaging tool first; Reprise
+              cannot select physical drives yet. See the
+              <a
+                href="https://www.cgsecurity.org/testdisk_doc/ddrescue.html"
+                target="_blank"
+                rel="noreferrer"
+                >disk-imaging guide</a
+              >. If a drive is failing, stop repeated scans and consider
+              professional imaging. Use a healthy drive to store the image and
+              saved results.
+            </p>
+            <p>
+              This is a content scan. It cannot tell deleted files from existing
+              ones, restore original filenames or folders, join fragments,
+              unlock encrypted volumes, or recover bytes erased by overwriting
+              or SSD TRIM. E01, compressed DMG, VHDX and other encoded image
+              containers need conversion first. Unfinished RSV recovery remains
+              in <a href="#workspace">Repair recordings</a>.
+            </p>
+            <p>
+              Per scan: up to 10,000 candidates, 100,000 signature attempts, and
+              64 GiB per candidate. Large or badly damaged images may reach a
+              work limit. No full codec decode is performed here.
+              <a href="downloads/image-recovery.md"
+                >Read methods and test evidence →</a
+              >
+            </p>
+          </details>
+          <section
+            id="scan-progress-panel"
+            class="recovery-progress"
+            hidden
+            aria-label="Scan progress"
+          >
+            <div class="panel-heading">
+              <h2 id="scan-status" role="status" aria-live="polite">Ready</h2>
+              <button class="button secondary" id="scan-cancel" hidden>
+                Stop scan
+              </button>
+            </div>
+            <progress
+              id="scan-progress"
+              value="0"
+              max="100"
+              aria-label="Image scan completion"
+            ></progress>
+            <p id="scan-read"></p>
+            <p id="scan-warnings" class="notice" hidden></p>
+          </section>
+          <section
+            id="recovery-results"
+            class="recovery-results"
+            hidden
+            aria-label="Recovered file candidates"
+          >
+            <div class="panel-heading">
+              <h2>Review your results <span id="recovery-count"></span></h2>
+              <button class="text-button" id="recovery-report" disabled>
+                Save scan report
+              </button>
+            </div>
+            <p id="recovery-summary"></p>
+            <p class="save-reminder">
+              Save to a healthy drive, away from the storage you are recovering.
+            </p>
+            <div id="recovery-result-controls" hidden>
+              <label for="recovery-filter"
+                >Show
+                <select id="recovery-filter">
+                  <option value="all">All candidates</option>
+                  <option value="video">Video</option>
+                  <option value="audio">Audio</option>
+                  <option value="image">Photos</option>
+                  <option value="archive">Archives</option>
+                  <option value="document">Documents</option>
+                </select></label
+              ><span class="candidate-label"
+                >Candidates · completeness unknown</span
+              >
+            </div>
+            <div id="recovery-list"></div>
+            <div id="recovery-pagination" class="inline-actions" hidden>
+              <button class="button secondary" id="recovery-previous">
+                Previous</button
+              ><span id="recovery-page"></span
+              ><button class="button secondary" id="recovery-next">Next</button>
+            </div>
+          </section>
+          <div class="workspace-footer">
+            <span>Still have the recording, but it won’t open?</span
+            ><a href="#workspace">Go to media repair →</a>
+          </div>
+        </section>
         <section id="coverage-view" class="view" hidden>
           <div class="page-heading">
             <div>
@@ -250,8 +408,10 @@
               </p>
               <p>
                 If your drive is failing or files are deleted, file repair alone
-                is not the right tool. Drive recovery is a separate, planned
-                release.
+                is not the right tool. Use
+                <a href="#recovery">Recover files</a> for supported files in a
+                raw disk image. Physical-drive scanning and filesystem
+                reconstruction are planned.
               </p>
             </article>
             <article class="guide-card">
@@ -301,7 +461,7 @@
             <div class="inline-actions">
               <a
                 class="button secondary"
-                href="https://github.com/akhil29897/reprise/releases/download/v0.1.0-alpha.1/reprise-source.zip"
+                href="https://github.com/akhil29897/reprise/archive/refs/heads/main.zip"
                 download
                 >Download source</a
               ><a class="button secondary" href="downloads/README.md"
@@ -343,12 +503,16 @@
             Download the source package and follow its setup guide. FFmpeg is
             required for video work.
           </p>
-          <a href="https://github.com/akhil29897/reprise/releases/download/v0.1.0-alpha.1/reprise-source.zip" download
+          <a
+            href="https://github.com/akhil29897/reprise/archive/refs/heads/main.zip"
+            download
             >Download source package ↗</a
           >
 
           <p>
-            <a href="https://github.com/akhil29897/reprise/releases/download/v0.1.0-alpha.1/reprise-macos-arm64.zip" download
+            <a
+              href="https://github.com/akhil29897/reprise/releases/download/v0.1.0-alpha.1/reprise-macos-arm64.zip"
+              download
               >Mac Apple Silicon development build</a
             >
             · Unsigned. Windows: build from source.
