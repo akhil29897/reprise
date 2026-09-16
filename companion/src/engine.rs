@@ -196,6 +196,7 @@ impl Engine {
         let reference_mode = strategy == "reference"
             || (strategy == "auto" && probe.is_err() && reference.is_some());
         let mut working = input.to_path_buf();
+        let mut stopped_early = false;
         let mut info = probe.as_ref().ok().cloned();
         if reference_mode {
             report["strategy"] = json!("reference");
@@ -219,8 +220,19 @@ impl Engine {
                 good.to_string_lossy().into_owned(),
                 damaged.to_string_lossy().into_owned(),
             ];
-            let (ok, _, err) = self.run(exe, &args, dir, &cancel, "untrunc")?;
-            working = dir.join("damaged.mp4_fixed.mp4");
+            let (ok, out, err) = self.run(exe, &args, dir, &cancel, "untrunc")?;
+            // A cleanly decoding output can still be missing everything after the point untrunc gave up.
+            // untrunc logs "premature end (~47.27%)" on stdout; near 100% only the trailing bytes were skipped.
+            if premature_end_percent(&out).is_some_and(|p| p < 95.0) {
+                stopped_early = true;
+                report["warnings"].as_array_mut().unwrap().push(json!("Reference reconstruction stopped before the end of the damaged file; later footage is likely missing."));
+            }
+            // untrunc switches to dynamic stats (and a "-dyn" suffix) for B-frame/ctts video, e.g. XAVC S.
+            working = ["damaged.mp4_fixed.mp4", "damaged.mp4_fixed-dyn.mp4"]
+                .into_iter()
+                .map(|name| dir.join(name))
+                .find(|path| path.exists())
+                .unwrap_or_else(|| dir.join("damaged.mp4_fixed.mp4"));
             if !ok || !working.exists() {
                 return Err(format!(
                     "Reference reconstruction failed: {}",
@@ -369,12 +381,12 @@ impl Engine {
             return Err("No decoded media was verified. Encoded packets alone do not establish playable recovery.".into());
         }
         report["outputSha256"] = json!(sha(&output, &cancel)?);
-        report["summary"] = json!(if full && remux_ok {
+        report["summary"] = json!(if full && remux_ok && !stopped_early {
             "Output remuxed and every audio/video stream fully decoded. Completeness is unknown."
         } else {
             "A candidate contains some decoded media but has validation or remux errors. Review it carefully; playback and completeness are not established."
         });
-        Ok((output, full && remux_ok))
+        Ok((output, full && remux_ok && !stopped_early))
     }
     pub fn versions(&self, dir: &Path, cancel: &AtomicBool) -> Value {
         let mut value = json!({});
@@ -461,6 +473,22 @@ mod resource_tests {
     }
 }
 
+fn premature_end_percent(log: &str) -> Option<f64> {
+    let rest = &log[log.rfind("premature end (~")? + "premature end (~".len()..];
+    rest[..rest.find('%')?].parse().ok()
+}
+#[cfg(test)]
+mod premature_end_tests {
+    use super::*;
+    #[test]
+    fn reads_untrunc_stop_point() {
+        assert_eq!(
+            premature_end_percent("0%  \rError: unable to find correct codec -> premature end (~47.27%)\n"),
+            Some(47.27)
+        );
+        assert_eq!(premature_end_percent("Info: Found 200 packets"), None);
+    }
+}
 fn decoded_media(progress: &str, video: bool) -> bool {
     let key = if video { "frame=" } else { "out_time_us=" };
     progress
