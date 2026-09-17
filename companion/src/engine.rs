@@ -1,3 +1,4 @@
+use crate::timing;
 use serde_json::{json, Value};
 use sha2::{Digest, Sha256};
 use std::{
@@ -196,6 +197,7 @@ impl Engine {
         let reference_mode = strategy == "reference"
             || (strategy == "auto" && probe.is_err() && reference.is_some());
         let mut working = input.to_path_buf();
+        let mut stopped_early = false;
         let mut info = probe.as_ref().ok().cloned();
         if reference_mode {
             report["strategy"] = json!("reference");
@@ -215,19 +217,43 @@ impl Engine {
             copy_media(input, &damaged, &cancel)?;
             copy_media(donor, &good, &cancel)?;
             stage("repairing");
-            let args = vec![
+            let mut args = vec![
                 good.to_string_lossy().into_owned(),
                 damaged.to_string_lossy().into_owned(),
             ];
-            let (ok, _, err) = self.run(exe, &args, dir, &cancel, "untrunc")?;
-            working = dir.join("damaged.mp4_fixed.mp4");
+            // Camera-written Sony RSV files start with an rtmd metadata packet and need untrunc's RSV mode.
+            if starts_with_sony_rtmd(input)? {
+                args.insert(0, "-rsv-ben".into());
+                report["rsvMode"] = json!(true);
+                report["warnings"].as_array_mut().unwrap().push(json!("Sony RSV structure detected; untrunc RSV mode was used. This path is not yet verified with Reprise camera fixtures."));
+            }
+            let (ok, out, err) = self.run(exe, &args, dir, &cancel, "untrunc")?;
+            // A cleanly decoding output can still be missing everything after the point untrunc gave up.
+            // untrunc logs "premature end (~47.27%)" on stdout; near 100% only the trailing bytes were skipped.
+            if premature_end_percent(&out).is_some_and(|p| p < 95.0) {
+                stopped_early = true;
+                report["warnings"].as_array_mut().unwrap().push(json!("Reference reconstruction stopped before the end of the damaged file; later footage is likely missing."));
+            }
+            // untrunc appends mode suffixes to the output name ("-dyn" for B-frame video such as XAVC S, "-rsvBen").
+            working = ["", "-dyn", "-rsvBen", "-dyn-rsvBen"]
+                .into_iter()
+                .map(|suffix| dir.join(format!("damaged.mp4_fixed{suffix}.mp4")))
+                .find(|path| path.exists())
+                .unwrap_or_else(|| dir.join("damaged.mp4_fixed.mp4"));
             if !ok || !working.exists() {
+                // untrunc reports most errors on stdout.
+                let log = format!("{err}{out}");
                 return Err(format!(
                     "Reference reconstruction failed: {}",
-                    err.chars().take(1500).collect::<String>()
+                    log.lines().filter(|l| l.contains("Error") || l.contains("error")).collect::<Vec<_>>().join(" ").chars().take(1500).collect::<String>()
                 ));
             }
-            info = Some(self.probe(&working, dir, &cancel, "reconstructed-probe")?);
+            if let Some(reordered) = self.restore_timing(&working, &good, dir, &cancel, report)? {
+                working = reordered;
+            }
+            info = Some(self.probe(&working, dir, &cancel, "reconstructed-probe").map_err(|e| {
+                format!("{e}. The reference clip may not match this recording's camera, codec, resolution and frame rate, or the damaged file may hold no recoverable media.")
+            })?);
         } else {
             probe?;
             report["strategy"] = json!("remux");
@@ -366,15 +392,69 @@ impl Engine {
             .and_then(|x| x.parse::<f64>().ok()));
         report["validation"] = json!({"fullDecode":full,"decodedMediaObserved":any_decoded,"errorCount":errors,"notes":notes});
         if !any_decoded {
-            return Err("No decoded media was verified. Encoded packets alone do not establish playable recovery.".into());
+            let hint = if report["strategy"] == "reference" {
+                " Check that the reference clip was recorded by the same camera with the same codec, resolution and frame rate."
+            } else {
+                ""
+            };
+            return Err(format!("No decoded media was verified. Encoded packets alone do not establish playable recovery.{hint}"));
         }
         report["outputSha256"] = json!(sha(&output, &cancel)?);
-        report["summary"] = json!(if full && remux_ok {
+        report["summary"] = json!(if full && remux_ok && !stopped_early {
             "Output remuxed and every audio/video stream fully decoded. Completeness is unknown."
         } else {
             "A candidate contains some decoded media but has validation or remux errors. Review it carefully; playback and completeness are not established."
         });
-        Ok((output, full && remux_ok))
+        Ok((output, full && remux_ok && !stopped_early))
+    }
+    /// Reference reconstruction can lose B-frame composition offsets and edit lists; rebuild them from decoded
+    /// frame order and the reference recording.
+    fn restore_timing(
+        &self,
+        input: &Path,
+        reference: &Path,
+        dir: &Path,
+        cancel: &AtomicBool,
+        report: &mut Value,
+    ) -> Result<Option<PathBuf>, String> {
+        let args = [
+            "-v",
+            "error",
+            "-max_alloc",
+            "268435456",
+            "-protocol_whitelist",
+            "file,pipe",
+            "-format_whitelist",
+            FORMATS,
+            "-select_streams",
+            "v:0",
+            "-show_entries",
+            "frame=pts",
+            "-of",
+            "csv=p=0",
+            "-i",
+        ]
+        .into_iter()
+        .map(String::from)
+        .chain([input.to_string_lossy().into_owned()])
+        .collect::<Vec<_>>();
+        let (_, frames, _) = self.run(&self.ffprobe, &args, dir, cancel, "frame-order")?;
+        let pts = frames
+            .lines()
+            .filter_map(|line| line.trim().trim_end_matches(',').parse::<i64>().ok())
+            .collect::<Vec<_>>();
+        let output = dir.join("retimed.mp4");
+        match timing::restore(input, &output, &pts, Some(reference)) {
+            Ok(restored) if restored == timing::Restored::default() => Ok(None),
+            Ok(restored) => {
+                report["timingRestored"] = json!({"displayOrder": restored.display_order, "editLists": restored.edit_lists});
+                Ok(Some(output))
+            }
+            Err(e) => {
+                report["warnings"].as_array_mut().unwrap().push(json!(format!("Frame presentation order could not be restored: {e}")));
+                Ok(None)
+            }
+        }
     }
     pub fn versions(&self, dir: &Path, cancel: &AtomicBool) -> Value {
         let mut value = json!({});
@@ -461,6 +541,44 @@ mod resource_tests {
     }
 }
 
+fn starts_with_sony_rtmd(path: &Path) -> Result<bool, String> {
+    let mut head = [0u8; 12];
+    let mut file = File::open(path).map_err(|e| e.to_string())?;
+    if file.read_exact(&mut head).is_err() {
+        return Ok(false);
+    }
+    Ok(is_sony_rtmd(&head))
+}
+/// Same signature untrunc uses: 00 1c 01 00, 4 variable bytes, f0 01 00 10.
+fn is_sony_rtmd(head: &[u8; 12]) -> bool {
+    head[..4] == [0x00, 0x1c, 0x01, 0x00] && head[8..] == [0xf0, 0x01, 0x00, 0x10]
+}
+#[cfg(test)]
+mod rsv_tests {
+    use super::*;
+    #[test]
+    fn detects_sony_rtmd_packet() {
+        assert!(is_sony_rtmd(&[0, 0x1c, 1, 0, 9, 9, 9, 9, 0xf0, 1, 0, 0x10]));
+        assert!(!is_sony_rtmd(&[0, 0x1c, 1, 0, 9, 9, 9, 9, 0, 0, 0, 0]));
+        assert!(!is_sony_rtmd(b"\0\0\0\x14ftypXAVC"));
+    }
+}
+fn premature_end_percent(log: &str) -> Option<f64> {
+    let rest = &log[log.rfind("premature end (~")? + "premature end (~".len()..];
+    rest[..rest.find('%')?].parse().ok()
+}
+#[cfg(test)]
+mod premature_end_tests {
+    use super::*;
+    #[test]
+    fn reads_untrunc_stop_point() {
+        assert_eq!(
+            premature_end_percent("0%  \rError: unable to find correct codec -> premature end (~47.27%)\n"),
+            Some(47.27)
+        );
+        assert_eq!(premature_end_percent("Info: Found 200 packets"), None);
+    }
+}
 fn decoded_media(progress: &str, video: bool) -> bool {
     let key = if video { "frame=" } else { "out_time_us=" };
     progress

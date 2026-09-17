@@ -40,7 +40,7 @@ For experimental missing-index reconstruction, build the optional upstream engin
 
 - Browser: conservative RIFF/WAV PCM and IEEE-float length repair, complete surviving sample export, metadata preservation, waveform for 16-bit PCM, playback, and JSON reports.
 - Companion: content probing, all-track stream-copy remux attempts, missing AVI timestamp generation, individual audio/video decode validation, SHA-256 reports, persistent jobs, cancellation, and streamed input/output.
-- Optional untrunc: healthy-reference reconstruction of some missing-index MP4/MOV recordings. Generated fixtures pass or return partial results depending on encoding mode.
+- Optional untrunc: healthy-reference reconstruction of some missing-index MP4/MOV recordings. On synthetic H.264/HEVC fixtures with separately recorded references, surviving frames and audio are recovered bit-identical, including B-frame order and track sync.
 - Catalog: 26 camera/recording families with models, containers, and research notes. Catalog entries are planned coverage, not a claim every listed camera works.
 
 The native format allowlist currently covers MOV/MP4, Matroska/WebM, AVI, MXF, MPEG-TS/PS, FLV, Ogg, WAV, MP3, AAC, FLAC, and ASF. Actual repair depends on the installed codecs, surviving media, and output-container compatibility. Recognized AIFF/CAF/RF64 and proprietary raw camera formats do not imply a verified repair path. Files that cannot retain all streams in the selected output container fail rather than silently dropping tracks.

@@ -2,7 +2,7 @@
 
 **Free, open-source media repair and disk-image recovery. Your files stay on your computer.**
 
-[Try the browser demo](https://akhil29897.github.io/reprise/) · [Downloads](https://github.com/akhil29897/reprise/releases/tag/v0.1.0-alpha.1) · [Repair benchmark](docs/media-repair-benchmark.md) · [Recovery benchmark](docs/image-recovery.md) · [Setup guide](docs/SETUP.md)
+[Try the browser demo](https://akhil29897.github.io/reprise/) · [Downloads](https://github.com/akhil29897/reprise/releases/tag/v0.2.1-alpha.1) · [Repair benchmark](docs/media-repair-benchmark.md) · [Recovery benchmark](docs/image-recovery.md) · [Setup guide](docs/SETUP.md)
 
 Reprise is an early repair and recovery workbench for creators and developers. Two focused workflows keep recording repair separate from file recovery. Repair supported WAV header/length faults in your browser, or connect a local companion for FFmpeg-based video/audio remux attempts, validation, and experimental reference reconstruction. Repair and export are free under GPL-3.0-or-later.
 
@@ -29,7 +29,7 @@ Contiguous WAV, AVI, MP4/MOV, JPEG, PNG, ordinary ZIP and recognizable Office ZI
 | Optional reference engine | Some missing-index MP4/MOV reconstruction using a matching healthy donor and pinned untrunc. Experimental.                                              |
 | Camera catalog            | 26 research families. A listed camera is **not** a verified supported model.                                                                            |
 
-Download the **unsigned Mac Apple Silicon** development package from [Releases](https://github.com/akhil29897/reprise/releases/tag/v0.1.0-alpha.1), install FFmpeg/ffprobe, and follow its README. Windows and Intel Mac users can build from source; no signed consumer installer is supplied. See the [companion guide](companion/README.md).
+Download the **unsigned Mac Apple Silicon** development package from [Releases](https://github.com/akhil29897/reprise/releases/tag/v0.2.1-alpha.1), install FFmpeg/ffprobe, and follow its README. Windows and Intel Mac users can build from source; no signed consumer installer is supplied. See the [companion guide](companion/README.md).
 
 **Real-camera Sony RSV remains unverified.** Disk-image carving may find surviving deleted or existing files; it cannot distinguish them. This release does not scan physical drives, repair physically failing storage, or recreate erased bytes. A successful decode does not establish original completeness, A/V synchronization, or metadata fidelity. Do not rely on an alpha as your only copy or recovery path.
 
