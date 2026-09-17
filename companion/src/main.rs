@@ -94,7 +94,7 @@ fn handle(
         return respond(
             req,
             200,
-            json!({"version":"0.1.0","engines":{"ffmpeg":security::is_executable(&e.ffmpeg),"ffprobe":security::is_executable(&e.ffprobe),"untrunc":e.untrunc.as_ref().is_some_and(|p|security::is_executable(p))},"platform":std::env::consts::OS}),
+            json!({"version":env!("CARGO_PKG_VERSION"),"engines":{"ffmpeg":security::is_executable(&e.ffmpeg),"ffprobe":security::is_executable(&e.ffprobe),"untrunc":e.untrunc.as_ref().is_some_and(|p|security::is_executable(p))},"platform":std::env::consts::OS}),
             &origin,
         );
     }
