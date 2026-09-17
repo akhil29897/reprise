@@ -1,0 +1,87 @@
+Reprise fixes for untrunc 9d86ec9ef2ffed1bf8131abe80742c0574db52b6 (GPL-2.0, see COPYING).
+
+1. avc1/hvc1: the learned frame-size upper bound was also applied to the first slice of a picture.
+   A damaged recording with a busier scene than the healthy reference stopped at the first larger frame
+   (or split SEI from its IDR slice). The first slice is now only rejected when implausibly large
+   (> 8x the largest allowed sample); the bound still guards merging further slices.
+2. mp4: a full-size final chunk ending exactly at the end of the data was rejected as having "no future",
+   dropping the last audio chunk.
+
+--- a/src/avc1/avc1.cpp
++++ b/src/avc1/avc1.cpp
+@@ -43,6 +43,7 @@
+ 		logg(V, "---\n");
+ 		if (self->chk_for_twos_ && Codec::looksLikeTwosOrSowt(pos)) return length;
+ 		NalInfo nal_info(pos, maxlength);
++		bool had_slice = previous_slice.is_ok;
+ 		bool was_keyframe = false;
+ 		if(!nal_info.is_ok){
+ 			logg(V, "failed parsing nal-header\n");
+@@ -99,7 +100,9 @@
+ 			break;
+ 		}
+ 
+-		if (self->ss_stats_->wouldExceed("avc1", length, nal_info.length_, self->was_keyframe_)) {
++		bool is_first_slice = !had_slice && (nal_info.nal_type_ == NAL_SLICE || nal_info.nal_type_ == NAL_IDR_SLICE);
++		if (is_first_slice ? self->ss_stats_->firstSliceTooLarge("avc1", length, nal_info.length_)
++		                   : self->ss_stats_->wouldExceed("avc1", length, nal_info.length_, self->was_keyframe_)) {
+ 			return length;
+ 		}
+ 
+--- a/src/hvc1/hvc1.cpp
++++ b/src/hvc1/hvc1.cpp
+@@ -31,6 +31,7 @@
+ 		logg(V, "---\n");
+ 		logg(V, "pos: ", g_mp4->offToStr(self->cur_off_ + length), "\n");
+ 		H265NalInfo nal_info(pos, maxlength);
++		bool had_slice = seen_slice;
+ 		if(!nal_info.is_ok){
+ 			logg(V, "failed parsing h256 nal-header\n");
+ 			return r;
+@@ -77,7 +78,9 @@
+ 			break;
+ 		}
+ 
+-		if (self->ss_stats_->wouldExceed("hvc1", length, nal_info.length_, g_allow_large_sample ? 1 : self->was_keyframe_)) {
++		bool is_first_slice = !had_slice && h265IsSlice(nal_info.nal_type_);
++		if (is_first_slice ? self->ss_stats_->firstSliceTooLarge("hvc1", length, nal_info.length_)
++		                   : self->ss_stats_->wouldExceed("hvc1", length, nal_info.length_, g_allow_large_sample ? 1 : self->was_keyframe_)) {
+ 			return r;
+ 		}
+ 		if (self->ss_stats_->isBigEnough(length, self->was_keyframe_)) {
+--- a/src/mp4.cpp
++++ b/src/mp4.cpp
+@@ -1752,9 +1752,11 @@
+ 		logg(V, "reducing n_sample ", n_samples, " -> ", new_n_samples, " because unsure\n");
+ 		n_samples = new_n_samples;
+ 	}
+-	n_samples = min((uint64_t)n_samples, (uint64_t)(current_mdat_->contentSize() - offset) / s_sz);
++	uint64_t remaining = current_mdat_->contentSize() - offset;
++	n_samples = min((uint64_t)n_samples, remaining / s_sz);
+ 
+-	bool at_end = n_samples < t.likely_n_samples_[0];
++	// A full-size final chunk that ends exactly at the end of the data is also the end, not a chunk without future.
++	bool at_end = n_samples < t.likely_n_samples_[0] || (uint64_t)n_samples * s_sz == remaining;
+ 	if (!at_end) {
+ 		logg(W2, "found chunk has no future: ", c, " at ", offToStr(c.off_ + c.size_), "\n");
+ 		return c;
+--- a/src/track.h
++++ b/src/track.h
+@@ -166,6 +166,17 @@
+ 		return false;
+ 	}
+ 
++	// The first slice of a picture defines the sample. Its size follows scene content, which can differ from the
++	// healthy reference, so only reject it when it is implausibly large; the bound still guards slice merging.
++	bool firstSliceTooLarge(const char *label, uint length, uint additional) {
++		uint64_t limit = 8 * (uint64_t)maxAllowedPktSz();
++		if (limit && (uint64_t)length + additional > limit) {
++			logg(V, "first ", label, "-slice implausibly large: ", length + additional, " > ", limit, "\n");
++			return true;
++		}
++		return false;
++	}
++
+ 	bool wouldExceed(const char *label, uint length, uint additional, bool is_keyframe) {
+ 		if (exceedsAllowed(length + additional, is_keyframe)) {
+ 			logg(V, "new partial ", label, "-length would exceed upper_bound: ", length, " + ", additional, " = ", length + additional, " > ", getUpperLimit(is_keyframe), "  // is_keyframe=", is_keyframe, "\n");

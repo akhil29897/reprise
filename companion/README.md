@@ -35,9 +35,11 @@ REPRISE_UNTRUNC="$PWD/vendor/untrunc/untrunc" ./target/release/reprise-companion
 
 On Linux install the compiler, make, git, pkg-config, and FFmpeg development libraries first. On Windows, build upstream untrunc using its documented toolchain or select a reviewed upstream binary, then set `$env:REPRISE_UNTRUNC` to the absolute executable path. Windows integration is supplied but has not been run on a Windows host in this release.
 
-Pinned upstream: https://github.com/anthwlock/untrunc at `9d86ec9ef2ffed1bf8131abe80742c0574db52b6`. It was built and tested against FFmpeg 8.1 on macOS Apple Silicon. Newer FFmpeg versions can break its private-structure assumptions; do not silently upgrade without tests. GPL source/build instructions must accompany redistribution.
+Pinned upstream: https://github.com/anthwlock/untrunc at `9d86ec9ef2ffed1bf8131abe80742c0574db52b6`. It was built and tested against FFmpeg 8.1 and 8.0.1 on macOS Apple Silicon. `build-untrunc.sh` applies `scripts/untrunc-patches/` (frame-size bound on first slices; final chunk at end of data). Newer FFmpeg versions can break its private-structure assumptions; do not silently upgrade without tests. GPL source/build instructions must accompany redistribution.
 
-Generated H.264 missing-moov fixtures have been repaired. A B-frame + AAC fixture produces timestamp errors and is explicitly partial. A no-B-frame video fixture passes full decode. These are synthetic MP4 tests, even when the input extension is `.rsv`; they do not establish Sony-camera RSV support. Real Sony RSV reconstruction remains experimental and requires camera/mode fixtures.
+After untrunc, the companion restores timing untrunc drops: B-frame presentation order (`ctts`, rebuilt from decoded frame order) and per-track edit lists (reorder delay, AAC priming) taken from the reference. Files that start with a Sony `rtmd` packet are passed to untrunc's `-rsv-ben` mode. If untrunc reports stopping before 95% of the file, the result is marked partial.
+
+On a synthetic corpus (H.264 with and without B-frames, AAC, XAVC S-like H.264 + LPCM, XAVC HS-like HEVC 10-bit + LPCM, a truncated recording, and extreme-detail content, each with a separately recorded reference), every video frame and audio sample that survived in the damaged file was recovered bit-identical and in presentation order. A mismatched reference and a zeroed file fail. These are synthetic MP4 tests, even when the input extension is `.rsv`; they do not establish Sony-camera RSV support. Real Sony RSV reconstruction (`-rsv-ben`) is not yet verified with camera fixtures.
 
 ## Storage and limits
 

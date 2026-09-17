@@ -5,7 +5,11 @@ mkdir -p "$ROOT/vendor"
 if [[ ! -d "$ROOT/vendor/untrunc/.git" ]]; then
   git clone https://github.com/anthwlock/untrunc.git "$ROOT/vendor/untrunc"
 fi
-git -C "$ROOT/vendor/untrunc" checkout --detach 9d86ec9ef2ffed1bf8131abe80742c0574db52b6
+git -C "$ROOT/vendor/untrunc" checkout --force --detach 9d86ec9ef2ffed1bf8131abe80742c0574db52b6
+# Reprise fixes (see the patch headers): frame-size bound on first slices, final chunk at end of data.
+for patch in "$ROOT"/scripts/untrunc-patches/*.patch; do
+  git -C "$ROOT/vendor/untrunc" apply "$patch"
+done
 if [[ "$(uname -s)" == Darwin ]]; then
   prefix=$(brew --prefix ffmpeg)
   # Pass flags via the environment: command-line LDFLAGS would override the Makefile's -lavformat/-lavcodec/-lavutil.
